@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  VEHICLE_RECEIVED
+  SERVICE_IN_PROGRESS
+  SERVICE_COMPLETED
+  FINAL_TOUCHUP_DONE
+}
+
+enum ServiceType {
+  WASH_ONLY
+  OIL_CHANGE_SERVICE
+  FULL_SYSTEM_CLEANUP
+}
+
+model Booking {
+  id             String        @id @default(cuid())
+  referenceCode  String        @unique
+  status         BookingStatus @default(PENDING)
+  brand          String
+  model          String
+  odometerKm     Int
+  serviceType    ServiceType
+  createdAt      DateTime      @default(now())
+}
